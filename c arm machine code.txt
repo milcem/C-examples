@@ -1,0 +1,375 @@
+Variables.c and .s
+
+/*
+ * variables.c
+ */
+
+int main(int argc, char *argv[])
+{
+    int x, y, z;
+
+    x = 42;
+    y = 19;
+
+    z = x + y;
+}
+
+
+	str	fp, [sp, #-4]!
+        add	fp, sp, #0
+        sub	sp, sp, #28
+        str	r0, [fp, #-24]
+        str	r1, [fp, #-28]
+        mov	r3, #42
+        str	r3, [fp, #-8]
+        mov	r3, #19
+        str	r3, [fp, #-12]
+        ldr	r2, [fp, #-8]
+        ldr	r3, [fp, #-12]
+        add	r3, r2, r3
+        str	r3, [fp, #-16]
+        mov	r3, #0
+        mov	r0, r3
+        sub	sp, fp, #0
+        @ sp needed
+        ldr	fp, [sp], #4
+        bx	lr
+
+
+if.c and .s
+
+/*
+ * variables.c
+ */
+
+int main(int argc, char *argv[])
+{
+    int x, y, z;
+
+    x = 42;
+    y = 19;
+
+    z = x + y;
+}
+
+
+
+ sub	sp, sp, #20
+	str	r0, [fp, #-16]
+        str	r1, [fp, #-20]
+        mov	r3, #12
+        str	r3, [fp, #-8]
+        ldr	r3, [fp, #-8]
+        cmp	r3, #0
+        bge	.L2
+        ldr	r3, [fp, #-8]
+        rsb	r3, r3, #0
+        str	r3, [fp, #-8]
+.L2:
+   	ldr	r2, [fp, #-8]
+        mov	r3, r2
+        mov	r3, r3, asl #3
+        add	r3, r3, r2
+        str	r3, [fp, #-12]
+        mov	r3, #0
+        mov	r0, r3
+        sub	sp, fp, #0
+        @ sp needed
+        ldr	fp, [sp], #4
+        bx	lr
+
+
+while.c and .s
+
+
+/*
+ * while.c
+ */
+
+int main(int argc, char *argv[])
+{
+    int x, y;
+    int product;
+
+    x = 10;
+    y = 5;
+
+    product = 0;
+    while(y > 0) {
+        product = product + x;
+        y--;
+    }
+}
+
+	str	fp, [sp, #-4]!
+	add	fp, sp, #0
+	sub	sp, sp, #28
+	str	r0, [fp, #-24]
+	str	r1, [fp, #-28]
+	mov	r3, #10
+	str	r3, [fp, #-16]
+	mov	r3, #5
+	str	r3, [fp, #-8]
+	mov	r3, #0
+	str	r3, [fp, #-12]
+	b	.L2
+.L3:
+	ldr	r2, [fp, #-12]
+	ldr	r3, [fp, #-16]
+	add	r3, r2, r3
+	str	r3, [fp, #-12]
+	ldr	r3, [fp, #-8]
+	sub	r3, r3, #1
+	str	r3, [fp, #-8]
+.L2:
+	ldr	r3, [fp, #-8]
+	cmp	r3, #0
+	bgt	.L3
+	mov	r3, #0
+        mov	r0, r3
+        sub	sp, fp, #0
+        @ sp needed
+        ldr	fp, [sp], #4
+        bx	lr
+
+
+for.c and .s
+
+/*
+ * for.c
+ */
+
+int main(int argc, char *argv[])
+{
+    int x, y;
+    int product;
+
+    x = 10;
+    y = 5;
+
+    for(product = 0; y > 0; y--) {
+        product = product + x;
+    }
+}
+
+
+	str	fp, [sp, #-4]!
+	add	fp, sp, #0
+	sub	sp, sp, #28
+	str	r0, [fp, #-24]
+	str	r1, [fp, #-28]
+	mov	r3, #10
+	str	r3, [fp, #-16]
+	mov	r3, #5
+	str	r3, [fp, #-8]
+	mov	r3, #0
+	str	r3, [fp, #-12]
+	b	.L2
+.L3:
+	ldr	r2, [fp, #-12]
+	ldr	r3, [fp, #-16]
+	add	r3, r2, r3
+	str	r3, [fp, #-12]
+	ldr	r3, [fp, #-8]
+	sub	r3, r3, #1
+	str	r3, [fp, #-8]
+.L2:
+	ldr	r3, [fp, #-8]
+	cmp	r3, #0
+        bgt	.L3
+        mov	r3, #0
+        mov	r0, r3
+        sub	sp, fp, #0
+        @ sp needed
+        ldr	fp, [sp], #4
+        bx	lr
+
+
+array.c and .s
+
+
+int main(int argc, char *argv[])
+{
+    int a[10];
+
+    a[0] = 0;
+    a[9] = 9;
+}
+
+
+        str	fp, [sp, #-4]!
+        add	fp, sp, #0
+        sub	sp, sp, #52
+        str	r0, [fp, #-48]
+        str	r1, [fp, #-52]
+        mov	r3, #0
+        str	r3, [fp, #-44]
+        mov	r3, #9
+        str	r3, [fp, #-8]
+        mov	r3, #0
+        mov	r0, r3
+        sub	sp, fp, #0
+        @ sp needed
+        ldr	fp, [sp], #4
+        bx	lr
+
+
+array-for.c and .s
+
+
+int main(int argc, char *argv[])
+{
+    int i;
+    int a[10];
+
+    for(i=0; i<10; i++) {
+        a[i] = i;
+    }
+}
+
+	str	fp, [sp, #-4]!
+        add	fp, sp, #0
+        sub	sp, sp, #60
+        str	r0, [fp, #-56]
+        str	r1, [fp, #-60]
+        mov	r3, #0
+        str	r3, [fp, #-8]
+        b	.L2
+.L3:
+   	ldr	r3, [fp, #-8]
+        mov	r3, r3, asl #2
+        sub	r2, fp, #4
+        add	r3, r2, r3
+        ldr	r2, [fp, #-8]
+        str	r2, [r3, #-44]
+        ldr	r3, [fp, #-8]
+        add	r3, r3, #1
+        str	r3, [fp, #-8]
+.L2:
+   	ldr	r3, [fp, #-8]
+        cmp	r3, #9
+        ble	.L3
+        mov	r3, #0
+        mov	r0, r3
+        sub	sp, fp, #0
+        @ sp needed
+        ldr	fp, [sp], #4
+        bx	lr
+
+
+struct.c and .s
+
+/*
+ * struct.c
+ */
+
+struct point {
+    int x, y;
+};
+
+int main(int argc, char *argv[])
+{
+    struct point p1;
+
+    p1.x = 12;
+    p1.y = 21;
+}
+
+
+
+	str	fp, [sp, #-4]!
+        add	fp, sp, #0
+        sub	sp, sp, #20
+        str	r0, [fp, #-16]
+        str	r1, [fp, #-20]
+        mov	r3, #12
+        str	r3, [fp, #-12]
+        mov	r3, #21
+        str	r3, [fp, #-8]
+        mov	r3, #0
+        mov	r0, r3
+        sub	sp, fp, #0
+        @ sp needed
+        ldr	fp, [sp], #4
+        bx	lr
+
+
+func.c and .s
+
+
+/*
+ * func.c
+ */
+
+int foo(int bar); /* function prototype */
+
+int main(int argc, char *argv[])
+{
+    int x, y;
+
+    x = 10;
+    y = foo(x);
+    y = y * 2;
+}
+
+int foo(int bar)
+{
+    int baz;
+
+    baz = bar * 9;
+
+    return baz;
+}
+
+Disassembly of section .text:
+
+00000000 <main>:
+   0:	e92d4800 	push	{fp, lr}
+   4:	e28db004 	add	fp, sp, #4
+   8:	e24dd010 	sub	sp, sp, #16
+   c:	e50b0010 	str	r0, [fp, #-16]
+  10:	e50b1014 	str	r1, [fp, #-20]	; 0xffffffec
+  14:	e3a0300a 	mov	r3, #10
+  18:	e50b3008 	str	r3, [fp, #-8]
+  1c:	e51b0008 	ldr	r0, [fp, #-8]
+  20:	ebfffffe 	bl	48 <foo>
+  24:	e50b000c 	str	r0, [fp, #-12]
+  28:	e51b300c 	ldr	r3, [fp, #-12]
+  2c:	e1a03083 	lsl	r3, r3, #1
+  30:	e50b300c 	str	r3, [fp, #-12]
+  34:	e3a03000 	mov	r3, #0
+  38:	e1a00003 	mov	r0, r3
+  3c:	e24bd004 	sub	sp, fp, #4
+  40:	e8bd4800 	pop	{fp, lr}
+  44:	e12fff1e 	bx	lr
+00000048 <foo>:
+  48:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+  4c:	e28db000 	add	fp, sp, #0
+  50:	e24dd014 	sub	sp, sp, #20
+  54:	e50b0010 	str	r0, [fp, #-16]
+  58:	e51b2010 	ldr	r2, [fp, #-16]
+  5c:	e1a03002 	mov	r3, r2
+  60:	e1a03183 	lsl	r3, r3, #3
+  64:	e0833002 	add	r3, r3, r2
+  68:	e50b3008 	str	r3, [fp, #-8]
+  6c:	e51b3008 	ldr	r3, [fp, #-8]
+  70:	e1a00003 	mov	r0, r3
+  74:	e24bd000 	sub	sp, fp, #0
+  78:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+  7c:	e12fff1e 	bx	lr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
